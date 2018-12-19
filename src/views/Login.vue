@@ -6,12 +6,17 @@ import { ParsedLoginRequest } from '../lib/RequestTypes';
 import { ImportRequest } from '@nimiq/keyguard-client';
 import { Static } from '../lib/StaticStore';
 import { DEFAULT_KEY_PATH } from '@/lib/Constants';
+import { State } from 'vuex-class';
 
 @Component
 export default class Login extends Vue {
     @Static private request!: ParsedLoginRequest;
+    @State private keyguardResult?: KeyguardRequest.SignTransactionResult;
 
     public created() {
+        // Success and error cases are handled by other components
+        if (this.keyguardResult) return;
+
         const request: ImportRequest = {
             appName: this.request.appName,
             defaultKeyPath: DEFAULT_KEY_PATH,

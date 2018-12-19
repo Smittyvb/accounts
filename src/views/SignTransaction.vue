@@ -13,8 +13,7 @@ export default class SignTransaction extends Vue {
     @Static private request!: ParsedSignTransactionRequest;
     @State private keyguardResult?: KeyguardRequest.SignTransactionResult;
 
-    public async mounted() {
-        console.log('SignTransaction running');
+    public async created() {
         // Success and error cases are handled by other components
         if (this.keyguardResult) return;
 
@@ -54,7 +53,7 @@ export default class SignTransaction extends Vue {
         staticStore.keyguardRequest = storedRequest;
 
         const client = this.$rpc.createKeyguardClient();
-        setTimeout(() => client.signTransaction(request).catch(console.error), 1000); // TODO: proper error handling
+        client.signTransaction(request).catch(console.error); // TODO: proper error handling
     }
 }
 </script>
