@@ -136,12 +136,12 @@ export default new Router({
         {
             path: `/${RequestType.ONBOARD}`,
             component: OnboardingSelector,
-            name: `${RequestType.ONBOARD}`,
+            name: RequestType.ONBOARD,
         },
         {
             path: `/${RequestType.SIGNUP}`,
             component: Signup,
-            name: `${RequestType.SIGNUP}`,
+            name: RequestType.SIGNUP,
         },
         {
             path: `/${RequestType.SIGNUP}/success`,

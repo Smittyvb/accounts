@@ -11,7 +11,7 @@ import { State } from 'vuex-class';
 @Component
 export default class Login extends Vue {
     @Static private request!: ParsedLoginRequest;
-    @State private keyguardResult?: KeyguardRequest.SignTransactionResult;
+    @State private keyguardResult?: KeyguardRequest.ImportResult;
 
     public created() {
         // Success and error cases are handled by other components
