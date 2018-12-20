@@ -55,6 +55,8 @@ export default class SignupSuccess extends Vue {
             walletId: walletInfo.id,
             label: walletInfo.label,
             type: walletInfo.type,
+            hasFile: walletInfo.hasFile,
+            hasWords: walletInfo.hasWords,
             accounts: [{
                 address: accountInfo.userFriendlyAddress,
                 label: accountInfo.label,
