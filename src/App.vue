@@ -69,6 +69,11 @@ export default class App extends Vue {
         margin-bottom: 12.5rem; /* Same height as the header (~100px) */
     }
 
+    .small-page {
+        width: 52.5rem;
+        height: 70.5rem;
+    }
+
     .global-close {
         margin-top: 8rem;
         margin-bottom: 5rem;

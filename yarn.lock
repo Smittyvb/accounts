@@ -627,10 +627,10 @@
     levelup "^2.0.2"
     node-lmdb "0.6.0"
 
-"@nimiq/keyguard-client@^0.1.6-beta.1":
-  version "0.1.6-beta.1"
-  resolved "https://registry.yarnpkg.com/@nimiq/keyguard-client/-/keyguard-client-0.1.6-beta.1.tgz#f7d9ffb509ef314c78df64357b939c4315c18b41"
-  integrity sha512-DGRGs6SGEpFw2hn5nzPKBF1Ca+CTFwXjXaEs7/tfCzNombgoLWgF7lUbOkhgoYmFMrX5nju6KQSm5Uw8L7p+PQ==
+"@nimiq/keyguard-client@^0.1.6-beta.2":
+  version "0.1.6-beta.2"
+  resolved "https://registry.yarnpkg.com/@nimiq/keyguard-client/-/keyguard-client-0.1.6-beta.2.tgz#5e4edb0e8e2f2f4185b31bbd7a0737ee1526ee04"
+  integrity sha512-lYac/4ZedtKEod1uKCY8upXplf35VtmGuE1mGfR1eVKALYYgZyAHOxUed+lMhMJ2BGiLi9fBFo9YMQTTjoCTVA==
   dependencies:
     "@nimiq/rpc" "^0.1.0-beta.3"
 
@@ -661,9 +661,10 @@
   resolved "https://registry.yarnpkg.com/@nimiq/rpc/-/rpc-0.1.0-beta.4.tgz#e05c9abb13f2f44b6056903fe9754e6cb9e2fb8f"
   integrity sha512-mp511v+htlo9yVB1PcvDtECqFZ9evBNBgML6ATZk3ZV/J0+qdsZfs75cwSVve1PxCrt6sTbhhesl8yIPbDaz2g==
 
-"@nimiq/style@https://github.com/nimiq/nimiq-style.git#julian/hover-states":
+"@nimiq/style@^0.4.1":
   version "0.4.1"
-  resolved "https://github.com/nimiq/nimiq-style.git#d34d2a8ddbedb3ea66096143ce01690c2f811563"
+  resolved "https://registry.yarnpkg.com/@nimiq/style/-/style-0.4.1.tgz#42b6e3a8ba4a0c7dbd71893b4149094466b48c49"
+  integrity sha512-OLWRXTgtxOv0R5cOMZ3M2WCoardx6thGbZbxbpnWdhZkqoYnWqGp0oV5X5ic6Vde4mt403ogXwbfGtzwJknvrQ==
 
 "@nimiq/utils@^0.1.0":
   version "0.1.0"
@@ -672,7 +673,7 @@
 
 "@nimiq/vue-components@https://github.com/nimiq/vue-components.git#build/accounts-new":
   version "0.1.0"
-  resolved "https://github.com/nimiq/vue-components.git#6b88e32f9e634b555a19636c1d9cbaf1dd375bf1"
+  resolved "https://github.com/nimiq/vue-components.git#38418379a38d5dee6327a0c4257773b7becda7b7"
   dependencies:
     vue "^2.5.17"
     vue-property-decorator "^7.0.0"
