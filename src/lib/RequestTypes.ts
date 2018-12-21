@@ -255,6 +255,12 @@ export interface ParsedMigrateRequest {
     kind: RequestType.MIGRATE;
 }
 
+export interface ExportResult {
+    success: true;
+    hasFile: boolean;
+    hasWords: boolean;
+}
+
 export type ListResult = WalletInfoEntry[];
 
 // Discriminated Unions
@@ -289,6 +295,7 @@ export type RpcResult = SignTransactionResult
                       | RenameResult
                       | SignMessageResult
                       | ChooseAddressResult
+                      | ExportResult
                       | ListResult;
 
 export class AccountsRequest {
