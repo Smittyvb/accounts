@@ -23,7 +23,7 @@ export default class RpcApi {
         this._staticStore = staticStore;
         this._router = router;
         this._server = new RpcServer('*');
-        this._keyguardClient = new KeyguardClient();
+        this._keyguardClient = new KeyguardClient('https://keyguard.nimiq-testnet.com');
 
         this._registerAccountsApis([
             RequestType.SIGN_TRANSACTION,
@@ -59,7 +59,7 @@ export default class RpcApi {
 
     public createKeyguardClient(endpoint?: string) {
         const behavior = new RedirectRequestBehavior(undefined, this._exportState());
-        const client = new KeyguardClient(endpoint, behavior);
+        const client = new KeyguardClient(endpoint || 'https://keyguard.nimiq-testnet.com', behavior);
         return client;
     }
 
