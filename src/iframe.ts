@@ -44,7 +44,8 @@ class IFrameApi {
     private static get allowedOrigin(): string {
         switch (window.location.origin) {
             case 'https://accounts.nimiq.com': return 'https://safe-next.nimiq.com';
-            case 'https://accounts.nimiq-testnet.com': return 'https://safe-next.nimiq-testnet.com';
+            // FIXME We need to support safe-next and safe currently. TODO: make RpcServer accept an array of origins.
+            case 'https://accounts.nimiq-testnet.com': return '*';
             default: return '*';
         }
     }
