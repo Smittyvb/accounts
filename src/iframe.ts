@@ -26,7 +26,7 @@ class IFrameApi {
         }
 
         // If no wallets exist, see if the Keyguard has keys
-        const client = new (await import('@nimiq/keyguard-client')).KeyguardClient();
+        const client = new (await import('@nimiq/keyguard-client')).KeyguardClient('https://keyguard.nimiq-testnet.com');
         const hasKeys = await client.hasKeys();
         if (hasKeys) {
             throw new Error('WALLETS_LOST');
