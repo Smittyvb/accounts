@@ -29,6 +29,7 @@
   "include": [
     "types/Nimiq.d.ts",
     "types/KeyguardRequest.d.ts",
+    "types/config.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",

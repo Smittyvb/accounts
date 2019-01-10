@@ -1,10 +1,18 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WriteFileWebpackPlugin = require('write-file-webpack-plugin');
+const webpack = require('webpack');
 
 const configureWebpack = {
     plugins: [
         new CopyWebpackPlugin([{ from: 'node_modules/@nimiq/vue-components/dist/img', to: 'img' }]),
-        new WriteFileWebpackPlugin()
+        new WriteFileWebpackPlugin(),
+        new webpack.DefinePlugin({
+            CONFIG: {
+                CDN: JSON.stringify(process.env.cdn),
+                NETWORK: JSON.stringify(process.env.network),
+                KEYGUARD_ENDPOINT: JSON.stringify(process.env.keyguard_endpoint)
+            }
+        })
     ]
 };
 
