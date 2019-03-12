@@ -1,4 +1,4 @@
-import { NetworkClient } from '@nimiq/network-client';
+import { NanoApi } from '@nimiq/nano-api';
 import { KeyguardClient } from '@nimiq/keyguard-client';
 import { AccountInfo } from '@/lib/AccountInfo';
 import { WalletStore } from '@/lib/WalletStore';
@@ -122,7 +122,7 @@ export default class WalletInfoCollector {
 
     private static _initializeDependencies(walletType: WalletType): void {
         WalletInfoCollector._networkInitializationPromise =
-            WalletInfoCollector._networkInitializationPromise || NetworkClient.Instance.init();
+            WalletInfoCollector._networkInitializationPromise || NanoApi.Instance.init();
         WalletInfoCollector._networkInitializationPromise
             .catch(() => delete WalletInfoCollector._networkInitializationPromise);
         if (walletType === WalletType.BIP39) {
@@ -202,7 +202,7 @@ export default class WalletInfoCollector {
     private static async _getBalances(accounts: BasicAccountInfo[]): Promise<Map<string, number>> {
         const userFriendlyAddresses = accounts.map((account) => account.address);
         await WalletInfoCollector._networkInitializationPromise;
-        const balances = await NetworkClient.Instance.getBalance(userFriendlyAddresses);
+        const balances = await NanoApi.Instance.getBalance(userFriendlyAddresses);
         for (const [address, balance] of balances) {
             balances.set(address, Nimiq.Policy.coinsToSatoshis(balance));
         }

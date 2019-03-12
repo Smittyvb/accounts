@@ -13,9 +13,9 @@
         "postinstall": "cd client && yarn"
     },
     "dependencies": {
-        "@nimiq/keyguard-client": "^0.2.3",
+        "@nimiq/keyguard-client": "0.2.5-beta.2",
         "@nimiq/ledgerjs": "https://github.com/nimiq/ledger-api.git",
-        "@nimiq/network-client": "^0.1.5",
+        "@nimiq/nano-api": "^0.1.0-alpha7",
         "@nimiq/rpc": "^0.1.1",
         "@nimiq/style": "^0.4.1",
         "@nimiq/utils": "^0.1.0",

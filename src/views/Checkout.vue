@@ -114,9 +114,8 @@ export default class Checkout extends Vue {
             // Reduce userfriendly addresses from that
             const addresses = accounts.map((account) => account.userFriendlyAddress);
 
-            // Get balances through pico consensus, also triggers head-change event
             const network = (this.$refs.network as Network);
-            const balances: Map<string, number> = await network.connectPico(addresses);
+            const balances: Map<string, number> = await network.subscribe(addresses);
 
             // Update accounts with their balances
             // (The accounts are still references to themselves in the wallets' accounts maps)

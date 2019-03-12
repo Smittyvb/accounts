@@ -12,31 +12,22 @@ import {
     SignTransactionRequest as KSignTransactionRequest,
     SignTransactionResult as KSignTransactionResult,
 } from '@nimiq/keyguard-client';
-import { NetworkClient, DetailedPlainTransaction } from '@nimiq/network-client';
+// import { NanoApi, DetailedPlainTransaction } from '@nimiq/network-client';
+import { NanoApi, Events, DetailedPlainTransaction } from '@nimiq/nano-api';
 import Config from 'config';
 import { NETWORK_TEST, NETWORK_DEV, NETWORK_MAIN, ERROR_INVALID_NETWORK } from '../lib/Constants';
 
 @Component
-class Network extends Vue {
+export default class Network extends Vue {
     @Prop(Boolean) private visible?: boolean;
     @Prop(Boolean) private alwaysVisible?: boolean;
     @Prop(String) private message?: string;
 
     private consensusEstablished: boolean = false;
-    private boundListeners: Array<[NetworkClient.Events, (...args: any[]) => void]> = [];
+    private boundListeners: Array<[Events, (...args: any[]) => void]> = [];
 
     public async connect() {
-        // Load network iframe
-        const client = await this._getNetworkClient();
-    }
-
-    public async connectPico(addresses: string[]): Promise<Map<string, number>> {
-        // Load network iframe
-        const client = await this._getNetworkClient();
-        client.disconnect();
-
-        // Connect
-        return client.connectPico(addresses);
+        const client = await this._getNanoApi();
     }
 
     // Uint8Arrays cannot be stored in SessionStorage, thus the stored request has arrays instead and is
@@ -123,7 +114,7 @@ class Network extends Vue {
      */
     public async sendToNetwork(tx: Nimiq.Transaction): Promise<SignTransactionResult> {
         const txObj = this.makeSignTransactionResult(tx);
-        const client = await this._getNetworkClient();
+        const client = await this._getNanoApi();
 
         const txObjToSend = Object.assign({}, txObj, {
             value: Nimiq.Policy.satoshisToCoins(txObj.value),
@@ -138,8 +129,13 @@ class Network extends Vue {
         });
     }
 
+    public async subscribe(addresses: string[]) {
+        const client = await this._getNanoApi();
+        return client.subscribe(addresses);
+    }
+
     public async getBalances(addresses: string[]): Promise<Map<string, number>> {
-        const client = await this._getNetworkClient();
+        const client = await this._getNanoApi();
         return client.getBalance(addresses);
     }
 
@@ -149,77 +145,80 @@ class Network extends Vue {
     }
 
     private destroyed() {
-        if (!NetworkClient.hasInstance()) return;
+        if (!NanoApi.hasInstance()) return;
         for (const [event, listener] of this.boundListeners) {
-            NetworkClient.Instance.off(event, listener);
+            NanoApi.Instance.off(event, listener);
         }
     }
 
-    private async _getNetworkClient(): Promise<NetworkClient> {
-        if (!NetworkClient.hasInstance()) {
-            const networkClient = NetworkClient.createInstance();
-            await networkClient.init();
+    private async _getNanoApi(): Promise<NanoApi> {
+        if (!NanoApi.hasInstance) {
+            const config = { CDN: Config.CDN, network: Config.network, usePico: true };
+            const client = NanoApi.createInstance(config);
+            await client.init();
         }
 
         if (this.boundListeners.length === 0) {
-            this._registerNetworkListener(NetworkClient.Events.API_READY,
-                () => this.$emit(Network.Events.API_READY));
-            this._registerNetworkListener(NetworkClient.Events.API_FAIL,
-                (e: Error) => this.$emit(Network.Events.API_FAIL, e));
-            this._registerNetworkListener(NetworkClient.Events.CONSENSUS_SYNCING,
-                () => this.$emit(Network.Events.CONSENSUS_SYNCING));
-            this._registerNetworkListener(NetworkClient.Events.CONSENSUS_ESTABLISHED,
-                () => this.$emit(Network.Events.CONSENSUS_ESTABLISHED));
-            this._registerNetworkListener(NetworkClient.Events.CONSENSUS_LOST,
-                () => this.$emit(Network.Events.CONSENSUS_LOST));
-            this._registerNetworkListener(NetworkClient.Events.PEERS_CHANGED,
-                (count: number) => this.$emit(Network.Events.PEERS_CHANGED, count));
-            this._registerNetworkListener(NetworkClient.Events.BALANCES_CHANGED,
-                (balances: Map<string, number>) => this.$emit(Network.Events.BALANCES_CHANGED, balances));
-            this._registerNetworkListener(NetworkClient.Events.TRANSACTION_PENDING,
-                (txInfo: Partial<DetailedPlainTransaction>) => this.$emit(Network.Events.TRANSACTION_PENDING, txInfo));
-            this._registerNetworkListener(NetworkClient.Events.TRANSACTION_EXPIRED,
-                (hash: string) => this.$emit(Network.Events.TRANSACTION_EXPIRED, hash));
-            this._registerNetworkListener(NetworkClient.Events.TRANSACTION_MINED,
-                (txInfo: DetailedPlainTransaction) => this.$emit(Network.Events.TRANSACTION_MINED, txInfo));
-            this._registerNetworkListener(NetworkClient.Events.TRANSACTION_RELAYED,
-                (txInfo: Partial<DetailedPlainTransaction>) => this.$emit(Network.Events.TRANSACTION_RELAYED, txInfo));
-            this._registerNetworkListener(NetworkClient.Events.HEAD_CHANGE,
+            this._registerNetworkListener(Events.API_READY,
+                () => this.$emit(Events.API_READY));
+            this._registerNetworkListener(Events.API_FAIL,
+                (e: Error) => this.$emit(Events.API_FAIL, e));
+            this._registerNetworkListener(Events.CONSENSUS_SYNCING,
+                () => this.$emit(Events.CONSENSUS_SYNCING));
+            this._registerNetworkListener(Events.CONSENSUS_ESTABLISHED,
+                () => this.$emit(Events.CONSENSUS_ESTABLISHED));
+            this._registerNetworkListener(Events.CONSENSUS_LOST,
+                () => this.$emit(Events.CONSENSUS_LOST));
+            this._registerNetworkListener(Events.PEERS_CHANGED,
+                (count: number) => this.$emit(Events.PEERS_CHANGED, count));
+            this._registerNetworkListener(Events.BALANCES_CHANGED,
+                (balances: Map<string, number>) => this.$emit(Events.BALANCES_CHANGED, balances));
+            this._registerNetworkListener(Events.TRANSACTION_PENDING,
+                (txInfo: Partial<DetailedPlainTransaction>) => this.$emit(Events.TRANSACTION_PENDING, txInfo));
+            this._registerNetworkListener(Events.TRANSACTION_EXPIRED,
+                (hash: string) => this.$emit(Events.TRANSACTION_EXPIRED, hash));
+            this._registerNetworkListener(Events.TRANSACTION_MINED,
+                (txInfo: DetailedPlainTransaction) => this.$emit(Events.TRANSACTION_MINED, txInfo));
+            this._registerNetworkListener(Events.TRANSACTION_RELAYED,
+                (txInfo: Partial<DetailedPlainTransaction>) => this.$emit(Events.TRANSACTION_RELAYED, txInfo));
+            this._registerNetworkListener(Events.HEAD_CHANGE,
                 (headInfo: {height: number, globalHashrate: number}) =>
-                    this.$emit(Network.Events.HEAD_CHANGE, headInfo));
+                    this.$emit(Events.HEAD_CHANGE, headInfo));
 
             this._fireInitialEvents();
         }
 
-        return NetworkClient.Instance;
+        return NanoApi.Instance;
     }
 
-    private _registerNetworkListener(event: NetworkClient.Events, listener: (...args: any[]) => void) {
-        if (!NetworkClient.hasInstance()) console.warn('Using default instance with default endpoint.');
-        NetworkClient.Instance.on(event, listener);
+    private _registerNetworkListener(event: Events, listener: (...args: any[]) => void) {
+        if (!NanoApi.hasInstance()) console.warn('Using default instance with default endpoint.');
+        NanoApi.Instance.on(event, listener);
         this.boundListeners.push([event, listener]);
     }
 
     private _fireInitialEvents() {
-        if (!NetworkClient.hasInstance()) return;
-        const networkClient = NetworkClient.Instance;
-        if (networkClient.apiLoadingState === 'ready') this.$emit(Network.Events.API_READY);
-        else if (networkClient.apiLoadingState === 'failed') this.$emit(Network.Events.API_FAIL);
+        if (!NanoApi.Instance) return;
 
-        if (networkClient.consensusState === 'syncing') this.$emit(Network.Events.CONSENSUS_SYNCING);
-        else if (networkClient.consensusState === 'established') this.$emit(Network.Events.CONSENSUS_ESTABLISHED);
-        else if (networkClient.consensusState === 'lost') this.$emit(Network.Events.CONSENSUS_LOST);
+        const networkClient = NanoApi.Instance;
 
-        if (networkClient.peerCount !== 0) this.$emit(Network.Events.PEERS_CHANGED, networkClient.peerCount);
+        if (networkClient.apiLoadingState === 'ready') this.$emit(Events.API_READY);
+        else if (networkClient.apiLoadingState === 'failed') this.$emit(Events.API_FAIL);
 
-        if (networkClient.balances.size !== 0) this.$emit(Network.Events.BALANCES_CHANGED, networkClient.balances);
+        if (networkClient.consensusState === 'syncing') this.$emit(Events.CONSENSUS_SYNCING);
+        else if (networkClient.consensusState === 'established') this.$emit(Events.CONSENSUS_ESTABLISHED);
+        else if (networkClient.consensusState === 'lost') this.$emit(Events.CONSENSUS_LOST);
 
-        for (const tx of networkClient.pendingTransactions) this.$emit(Network.Events.TRANSACTION_PENDING, tx);
-        for (const txHash of networkClient.expiredTransactions) this.$emit(Network.Events.TRANSACTION_EXPIRED, txHash);
-        for (const tx of networkClient.minedTransactions) this.$emit(Network.Events.TRANSACTION_MINED, tx);
-        for (const tx of networkClient.relayedTransactions) this.$emit(Network.Events.TRANSACTION_RELAYED, tx);
+        if (networkClient.peerCount !== 0) this.$emit(Events.PEERS_CHANGED, networkClient.peerCount);
 
-        if (networkClient.headInfo.height !== 0) this.$emit(Network.Events.HEAD_CHANGE, networkClient.headInfo);
+        if (networkClient.balances.size !== 0) this.$emit(Events.BALANCES_CHANGED, networkClient.balances);
+
+        for (const tx of networkClient.pendingTransactions) this.$emit(Events.TRANSACTION_PENDING, tx);
+        for (const txHash of networkClient.expiredTransactions) this.$emit(Events.TRANSACTION_EXPIRED, txHash);
+        for (const tx of networkClient.minedTransactions) this.$emit(Events.TRANSACTION_MINED, tx);
+        for (const tx of networkClient.relayedTransactions) this.$emit(Events.TRANSACTION_RELAYED, tx);
+
+        if (networkClient.headInfo.height !== 0) this.$emit(Events.HEAD_CHANGE, networkClient.headInfo);
     }
 
     private async _loadNimiq() {
@@ -251,25 +250,6 @@ class Network extends Vue {
         return this.message || 'Establishing consensus';
     }
 }
-
-namespace Network { // tslint:disable-line:no-namespace
-    export const enum Events {
-        API_READY = 'api-ready',
-        API_FAIL = 'api-fail',
-        CONSENSUS_SYNCING = 'consensus-syncing',
-        CONSENSUS_ESTABLISHED = 'consensus-established',
-        CONSENSUS_LOST = 'consensus-lost',
-        PEERS_CHANGED = 'peer-count',
-        BALANCES_CHANGED = 'balances',
-        TRANSACTION_PENDING = 'transaction-pending',
-        TRANSACTION_EXPIRED = 'transaction-expired',
-        TRANSACTION_MINED = 'transaction-mined',
-        TRANSACTION_RELAYED = 'transaction-relayed',
-        HEAD_CHANGE = 'head-change',
-    }
-}
-
-export default Network;
 </script>
 
 <style scoped>

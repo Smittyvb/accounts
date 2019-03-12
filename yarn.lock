@@ -720,34 +720,24 @@
     levelup "^2.0.2"
     node-lmdb "0.6.0"
 
-"@nimiq/keyguard-client@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@nimiq/keyguard-client/-/keyguard-client-0.2.3.tgz#c7046a019d6d911c5aed60fdcc08a3c2b5b97939"
-  integrity sha512-QeSY1px/3X5yAY32GT/n2TP5HixdDWcdltUV1XtJybvecoWx+YGh3EujxqCoLbTgr0TZxOMKxY6Ds8W0n8Z5kw==
+"@nimiq/keyguard-client@0.2.5-beta.2":
+  version "0.2.5-beta.2"
+  resolved "https://registry.yarnpkg.com/@nimiq/keyguard-client/-/keyguard-client-0.2.5-beta.2.tgz#7f1b3fb13eabbe33805be6159eaca95cf9710ef6"
+  integrity sha512-pPfLqT4Yo6IPW6gnVf7r3JohwkP/f7Stv5cLRZz9a4bq+gJSNBg4LsCZmAL/EMK5IaCT22yDcgjjoFsUFD5ztA==
   dependencies:
+    "@nimiq/core-web" "1.4.3"
     "@nimiq/rpc" "^0.1.1"
 
 "@nimiq/ledgerjs@https://github.com/nimiq/ledger-api.git":
   version "0.0.0"
   resolved "https://github.com/nimiq/ledger-api.git#a7d86a47b46d21ec2afea94086b2942ea1adb575"
 
-"@nimiq/network-client@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@nimiq/network-client/-/network-client-0.1.5.tgz#18420de8c8c342a4762bf533ffc358c96cc8adca"
-  integrity sha512-PFZhCTbh50g91T1Dnq4dFhfQRjTvch267JYbobcgdtAjq/EGxnXhs6BG/O2G/4jS7MaApIw6eRnU4FODXeQQlg==
+"@nimiq/nano-api@^0.1.0-alpha7":
+  version "0.1.0-alpha7"
+  resolved "https://registry.yarnpkg.com/@nimiq/nano-api/-/nano-api-0.1.0-alpha7.tgz#7de325125f00ca82061d70261851e3152676ff1e"
+  integrity sha512-Wb6+/iiQ6a0jmmzF6aXBzWUOtWq1JtI8wJQdEBtJH8xVJL07y3fUKy3Y5HMpsehrQBcbuE42dogHYDk5bv6YIg==
   dependencies:
-    "@nimiq/core-web" "1.4.3"
-    "@nimiq/rpc-events" "^0.0.5"
-
-"@nimiq/rpc-events@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@nimiq/rpc-events/-/rpc-events-0.0.5.tgz#7face10c875956aeee8f9b44e2184bcde5b6b203"
-  dependencies:
-    "@nimiq/rpc" "^0.0.11"
-
-"@nimiq/rpc@^0.0.11":
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/@nimiq/rpc/-/rpc-0.0.11.tgz#7230365640663827fb115e0d6456222de3b1c5e3"
+    "@nimiq/utils" "^0.2.0"
 
 "@nimiq/rpc@^0.1.1":
   version "0.1.1"
@@ -763,6 +753,11 @@
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@nimiq/utils/-/utils-0.1.0.tgz#4586f2fad3909311484513c9e23dceae838c6dda"
   integrity sha512-oN0AyYPkSowaAlgA1MjdbWjWzVHdd20cVH8uY9jpD+MulAl5s1yHxgNQKjgJjMZQFQMMOJjYHEPnf850t8V21g==
+
+"@nimiq/utils@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@nimiq/utils/-/utils-0.2.0.tgz#a9bc73358f95a355518bc371870282d65f494ebe"
+  integrity sha512-vuLZ09OYY3AKX0wJfnBMfx8ybogrNjWXLIoOe8HUURMa6oOFxbnLO0bc9yLIwFWWoWqB6t6RcInDMJOQcpkJyA==
 
 "@nimiq/vue-components@https://github.com/nimiq/vue-components.git#build/accounts":
   version "0.1.0"
