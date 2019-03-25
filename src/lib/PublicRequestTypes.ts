@@ -84,6 +84,11 @@ export interface Account {
     addresses: Address[];
 }
 
+export interface ExportRequest extends SimpleRequest {
+    fileOnly?: boolean;
+    wordsOnly?: boolean;
+}
+
 export interface ExportResult {
     fileExported: boolean;
     wordsExported: boolean;
@@ -98,7 +103,8 @@ export type RpcRequest = SignTransactionRequest
                        | BasicRequest
                        | SimpleRequest
                        | RenameRequest
-                       | SignMessageRequest;
+                       | SignMessageRequest
+                       | ExportRequest;
 
 export type RpcResult = SignedTransaction
                       | Account
