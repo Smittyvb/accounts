@@ -147,15 +147,20 @@ export default class RpcApi {
                     hasRequest: !!this._staticStore.request,
                 });
 
+                let account;
+                if (request && 'walletId' in request) {
+                    account = await WalletStore.Instance.get((request as ParsedSimpleRequest).walletId);
+                    if (!account) {
+                        // no account found although it's required
+                        state.reply(ResponseStatus.ERROR, new Error('Account ID not found'));
+                        return;
+                    }
+                }
+
                 if (location.pathname !== '/') {
                     // Don't jump back to request's initial view on reload when navigated to a subsequent view.
                     // E.g. if the user switches from Checkout to Import, don't jump back to Checkout on reload.
                     return;
-                }
-
-                let account;
-                if (request && 'walletId' in request) {
-                    account = await WalletStore.Instance.get((request as ParsedSimpleRequest).walletId);
                 }
 
                 if (account && account.type === WalletType.LEDGER
