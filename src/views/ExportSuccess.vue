@@ -4,7 +4,7 @@
             <Loader state="success">
                 <template slot="success">
                     <div class="success nq-icon"></div>
-                    <h1 class="title nq-h1">Account backed up!</h1>
+                    <h1 class="title nq-h1">{{successMessage}}</h1>
                 </template>
             </Loader>
         </SmallPage>
@@ -30,6 +30,8 @@ export default class ExportSuccess extends Vue {
 
     @Getter private findWallet!: (id: string) => WalletInfo | undefined;
 
+    private successMessage = '';
+
     private async mounted() {
         const wallet = this.findWallet(this.request.walletId);
         if (!wallet) {
@@ -39,6 +41,16 @@ export default class ExportSuccess extends Vue {
 
         wallet.fileExported = wallet.fileExported || this.keyguardResult.fileExported;
         wallet.wordsExported = wallet.wordsExported || this.keyguardResult.wordsExported;
+
+        if (this.keyguardResult.fileExported) {
+            if (this.keyguardResult.wordsExported) {
+                this.successMessage = 'Account backed up!';
+            } else {
+                this.successMessage = 'Login File exported!';
+            }
+        } else if (this.keyguardResult.wordsExported) {
+            this.successMessage = 'Recovery Words exported!';
+        }
 
         await WalletStore.Instance.put(wallet);
 
