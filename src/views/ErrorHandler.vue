@@ -1,7 +1,7 @@
 <template>
-    <div class="container pad-bottom">
+    <div v-if="title" class="container pad-bottom">
         <SmallPage>
-            <Loader v-if="title"
+            <Loader
                 :title="title"
                 :state="state"
                 :message="message"
