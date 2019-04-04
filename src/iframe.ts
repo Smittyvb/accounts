@@ -23,7 +23,7 @@ class IFrameApi {
             wallets = await WalletStore.Instance.list();
         }
         if (wallets.length > 0) {
-            return wallets;
+            return wallets.filter((wallet) => !wallet.keyMissing);
         }
 
         // If no wallets exist, see if the Keyguard has keys

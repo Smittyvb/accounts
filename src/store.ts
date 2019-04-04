@@ -126,6 +126,7 @@ const store: StoreOptions<RootState> = {
             const singleAccounts = new Map<string, AccountInfo>();
 
             const processedWallets = state.wallets.filter((wallet) => {
+                if (wallet.keyMissing) return false;
                 if (wallet.type !== WalletType.LEGACY) return true;
 
                 const [singleAccountAddress, singleAccountInfo] = Array.from(wallet.accounts.entries())[0];
