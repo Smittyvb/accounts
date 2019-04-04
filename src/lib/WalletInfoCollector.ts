@@ -149,7 +149,10 @@ export default class WalletInfoCollector {
 
     private static async _getWalletInfoInstance(walletId: string, walletType: WalletType): Promise<WalletInfo> {
         const existingWalletInfo = await WalletStore.Instance.get(walletId);
-        if (existingWalletInfo) return existingWalletInfo;
+        if (existingWalletInfo) {
+            existingWalletInfo.keyMissing = false;
+            return existingWalletInfo;
+        }
         const label = walletType === WalletType.LEGACY
             ? ACCOUNT_DEFAULT_LABEL_LEGACY
             : walletType === WalletType.BIP39
