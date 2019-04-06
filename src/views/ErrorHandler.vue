@@ -37,8 +37,6 @@ export default class ErrorHandler extends Vue {
     private message = '';
     private mainActionText = '';
     private alternativeActionText = '';
-    private mainActionHandlerDict: {[error: string]: (event: Event) => void} = {};
-    private alternativeActionHandlerDict: {[error: string]: (event: Event) => void} = {};
 
     private walletId?: string;
 
@@ -74,8 +72,8 @@ export default class ErrorHandler extends Vue {
             this.message = 'Your key is not available in the Keyguard. What would you like to do?';
             this.mainActionText = 'Login again';
             this.alternativeActionText = 'Delete account';
-            this.mainActionHandlerDict[Errors.Messages.KEY_NOT_FOUND] = this.goToImport;
-            this.alternativeActionHandlerDict[Errors.Messages.KEY_NOT_FOUND] = this.logout;
+            this.mainActionHandler = this.goToImport;
+            this.alternativeActionHandler = this.logout;
 
             this.walletId = walletId;
 
@@ -93,15 +91,8 @@ export default class ErrorHandler extends Vue {
         return false;
     }
 
-    private mainActionHandler(event: Event) {
-        const handler = this.mainActionHandlerDict[this.keyguardResult.message];
-        if (handler) handler.call(this, event);
-    }
-
-    private alternativeActionHandler(event: Event) {
-        const handler = this.alternativeActionHandlerDict[this.keyguardResult.message];
-        if (handler) handler.call(this, event);
-    }
+    private mainActionHandler: (event: Event) => void = () => {}; // tslint:disable-line no-empty
+    private alternativeActionHandler: (event: Event) => void = () => {}; // tslint:disable-line no-empty
 
     private goToImport() {
         staticStore.originalRouteName = this.request.kind;
