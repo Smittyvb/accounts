@@ -148,7 +148,7 @@ export default class RpcApi {
                 });
 
                 let account;
-                if (request && 'walletId' in request) {
+                if (request && (request as ParsedSimpleRequest).walletId) {
                     account = await WalletStore.Instance.get((request as ParsedSimpleRequest).walletId);
                     if (!account && requestType !== RequestType.LOGOUT) {
                         // no account found although it's required
